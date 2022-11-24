@@ -1,4 +1,4 @@
-.PHONY: start stop logs status mongo-shell app-build app-dev app-start help
+.PHONY: start stop logs status mongo-shell app-build app-dev app-start lint lint-and-fix format help
 .DEFAULT_GOAL := help
 run-docker-compose = docker compose -f docker-compose.yml
 
@@ -26,6 +26,15 @@ app-dev: # Run app in development mode
 
 app-start: # Start app in production mode
 	npm start
+
+lint: # Run linter
+	npm run lint
+
+lint-and-fix: # Run linter and fix errors
+	npm run lint-and-fix
+
+format: # Run formatter
+	npm run format
 
 help: # make help
 	@awk 'BEGIN {FS = ":.*#"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z0-9_-]+:.*?#/ { printf "  \033[36m%-27s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)

@@ -1,10 +1,10 @@
-import {fastify} from "fastify";
-import pino from "pino";
+import { fastify } from 'fastify'
+import pino from 'pino'
 
 const createApp = () => {
-    return fastify({
-        logger: pino({level: 'info'})
-    });
+  return fastify({
+    logger: pino({ level: 'info' }),
+  })
 }
 
-export default createApp;
+export default createApp
