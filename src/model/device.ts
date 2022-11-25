@@ -1,12 +1,12 @@
 import { Schema, Document, model, Model } from 'mongoose'
 
 export interface DeviceAttrs {
-    name: string;
-    address: string;
+  name: string
+  address: string
 }
 
 export interface DeviceModel extends Model<DeviceDocument> {
-    addOne(doc: DeviceAttrs): DeviceDocument;
+  addOne(doc: DeviceAttrs): DeviceDocument
 }
 
 export interface DeviceDocument extends Document {
@@ -37,7 +37,7 @@ export const deviceSchema: Schema = new Schema(
 )
 
 deviceSchema.statics.addOne = (doc: DeviceAttrs) => {
-    return new Device(doc);
-};
+  return new Device(doc)
+}
 
 export const Device = model<DeviceDocument, DeviceModel>('Device', deviceSchema)

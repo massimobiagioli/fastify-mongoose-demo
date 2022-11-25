@@ -5,7 +5,7 @@ import mongoose from 'mongoose'
 import { Device, DeviceModel } from './device'
 
 export interface DB {
-    models: Models
+  models: Models
 }
 
 export interface Models {
