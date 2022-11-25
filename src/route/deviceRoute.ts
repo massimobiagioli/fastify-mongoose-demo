@@ -22,7 +22,7 @@ interface deviceParams {
 
 const DeviceRoute: FastifyPluginAsync = async (
   server: FastifyInstance,
-  _: FastifyPluginOptions,
+  _options: FastifyPluginOptions,
 ) => {
   server.get('/api/devices', {}, async (request, reply) => {
     try {
