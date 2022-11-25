@@ -35,7 +35,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "make format && make lint-and-fix"
+      "pre-commit": "npm run lint-and-fix && npm run format"
     }
   }
 }
