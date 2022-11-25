@@ -4,6 +4,10 @@ import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
 import { Device, DeviceModel } from './device'
 
+export interface DB {
+    models: Models
+}
+
 export interface Models {
   Device: DeviceModel
 }
