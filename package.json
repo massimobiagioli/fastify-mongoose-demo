@@ -9,7 +9,8 @@
     "start": "node build/server.js",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
-    "format": "prettier --config .prettierrc 'src/**/*.ts' --write"
+    "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "",
@@ -32,10 +33,5 @@
     "husky": "^8.0.2",
     "prettier": "^2.8.0",
     "typescript": "^4.9.3"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-and-fix && npm run format"
-    }
   }
 }
