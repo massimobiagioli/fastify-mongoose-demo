@@ -6,9 +6,9 @@ import {
 import fp from 'fastify-plugin'
 import { DB } from '../model'
 import { DeviceAttrs } from '../model/device'
-import createDeviceAction from "../actions/createDeviceAction";
-import listDevicesAction from "../actions/listDevicesAction";
-import getDeviceAction from "../actions/getDeviceAction";
+import createDeviceAction from '../actions/createDeviceAction'
+import listDevicesAction from '../actions/listDevicesAction'
+import getDeviceAction from '../actions/getDeviceAction'
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -22,11 +22,11 @@ interface deviceParams {
 
 const DeviceRoute: FastifyPluginAsync = async (
   server: FastifyInstance,
-  _options: FastifyPluginOptions,
+  _: FastifyPluginOptions,
 ) => {
   server.get('/api/devices', {}, async (request, reply) => {
     try {
-      const action = listDevicesAction(server.db);
+      const action = listDevicesAction(server.db)
       const devices = await action()
       return reply.code(200).send(devices)
     } catch (error) {
@@ -36,22 +36,22 @@ const DeviceRoute: FastifyPluginAsync = async (
   })
 
   server.get<{ Params: deviceParams }>(
-      '/api/devices/:id',
-      {},
-      async (request, reply) => {
-        try {
-          const id = request.params.id
-          const action = getDeviceAction(server.db)
-          const device = await action(id)
-          if (!device) {
-            return reply.send(404)
-          }
-          return reply.code(200).send(device)
-        } catch (error) {
-          request.log.error(error)
-          return reply.send(400)
+    '/api/devices/:id',
+    {},
+    async (request, reply) => {
+      try {
+        const id = request.params.id
+        const action = getDeviceAction(server.db)
+        const device = await action(id)
+        if (!device) {
+          return reply.send(404)
         }
-      },
+        return reply.code(200).send(device)
+      } catch (error) {
+        request.log.error(error)
+        return reply.send(400)
+      }
+    },
   )
 
   server.post<{ Body: DeviceAttrs }>(
@@ -68,7 +68,6 @@ const DeviceRoute: FastifyPluginAsync = async (
       }
     },
   )
-
 }
 
 export default fp(DeviceRoute)
