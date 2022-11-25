@@ -1,6 +1,6 @@
 import { fastify } from 'fastify'
 import pino from 'pino'
-import db from './model'
+import db from './db'
 import deviceRoute from './route/deviceRoute'
 import { settings } from './config'
 

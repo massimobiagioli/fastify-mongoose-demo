@@ -2,9 +2,9 @@ import { FastifyInstance } from 'fastify'
 import { FastifyPluginAsync, FastifyPluginOptions } from 'fastify'
 import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
-import { Device, DeviceModel } from './device'
+import { Device, DeviceModel } from './model/device'
 
-export interface DB {
+export interface Index {
   models: Models
 }
 

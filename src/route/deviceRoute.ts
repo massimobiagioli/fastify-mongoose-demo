@@ -4,15 +4,15 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import fp from 'fastify-plugin'
-import { DB } from '../model'
-import { DeviceAttrs } from '../model/device'
+import { Index } from '../db'
+import { DeviceAttrs } from '../db/model/device'
 import createDeviceAction from '../actions/createDeviceAction'
 import listDevicesAction from '../actions/listDevicesAction'
 import getDeviceAction from '../actions/getDeviceAction'
 
 declare module 'fastify' {
   export interface FastifyInstance {
-    db: DB
+    db: Index
   }
 }
 

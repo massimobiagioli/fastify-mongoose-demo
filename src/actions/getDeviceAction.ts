@@ -1,6 +1,6 @@
-import { DB } from '../model'
+import { Index } from '../db'
 
-const getDeviceAction = (db: DB) => async (id: string) => {
+const getDeviceAction = (db: Index) => async (id: string) => {
   const { Device } = db.models
   return Device.findById(id)
 }
