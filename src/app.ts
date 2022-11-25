@@ -1,7 +1,7 @@
 import { fastify } from 'fastify'
 import pino from 'pino'
 import db from './model'
-import deviceRoute from './route/device'
+import deviceRoute from './route/deviceRoute'
 import { settings } from './config'
 
 const createApp = () => {
