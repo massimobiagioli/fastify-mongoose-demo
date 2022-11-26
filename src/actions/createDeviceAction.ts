@@ -5,11 +5,12 @@ export type CreateDeviceActionParams = {
   address: string
 }
 
-const createDeviceAction = (db: DB) => async (params: CreateDeviceActionParams) => {
-  const { Device } = db.models
-  const device = Device.addOne(params)
-  await device.save()
-  return device
-}
+const createDeviceAction =
+  (db: DB) => async (params: CreateDeviceActionParams) => {
+    const { Device } = db.models
+    const device = Device.addOne(params)
+    await device.save()
+    return device
+  }
 
 export default createDeviceAction
