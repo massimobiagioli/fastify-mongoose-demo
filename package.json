@@ -10,7 +10,8 @@
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
-    "prepare": "husky install"
+    "husky-prepare": "husky install",
+    "husky-generate-pre-commit": "npx husky add .husky/pre-commit \"make format && make lint-and-fix\""
   },
   "keywords": [],
   "author": "",
