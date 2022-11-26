@@ -1,9 +1,13 @@
-import { DeviceAttrs } from '../db/model/device'
-import { Index } from '../db'
+import { DB } from '../db'
 
-const createDeviceAction = (db: Index) => async (deviceAttrs: DeviceAttrs) => {
+export type CreateDeviceActionParams = {
+  name: string
+  address: string
+}
+
+const createDeviceAction = (db: DB) => async (params: CreateDeviceActionParams) => {
   const { Device } = db.models
-  const device = await Device.addOne(deviceAttrs)
+  const device = Device.addOne(params)
   await device.save()
   return device
 }

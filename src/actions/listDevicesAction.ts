@@ -1,6 +1,6 @@
-import { Index } from '../db'
+import { DB } from '../db'
 
-const listDevicesAction = (db: Index) => async () => {
+const listDevicesAction = (db: DB) => async () => {
   const { Device } = db.models
   return Device.find({})
 }

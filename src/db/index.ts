@@ -4,7 +4,7 @@ import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
 import { Device, DeviceModel } from './model/device'
 
-export interface Index {
+export interface DB {
   models: Models
 }
 
@@ -15,7 +15,7 @@ export interface Models {
 export interface DBOptions {
   uri: string
 }
-const DB: FastifyPluginAsync<DBOptions> = async (
+const DBPlugin: FastifyPluginAsync<DBOptions> = async (
   fastify: FastifyInstance,
   options: FastifyPluginOptions,
 ) => {
@@ -37,4 +37,4 @@ const DB: FastifyPluginAsync<DBOptions> = async (
   }
 }
 
-export default fp(DB)
+export default fp(DBPlugin)

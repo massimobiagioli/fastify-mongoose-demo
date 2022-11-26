@@ -1,8 +1,12 @@
-import { Index } from '../db'
+import { DB } from '../db'
 
-const getDeviceAction = (db: Index) => async (id: string) => {
+export type GetDeviceActionParams = {
+  id: string
+}
+
+const getDeviceAction = (db: DB) => async (params: GetDeviceActionParams) => {
   const { Device } = db.models
-  return Device.findById(id)
+  return Device.findById(params.id)
 }
 
 export default getDeviceAction
