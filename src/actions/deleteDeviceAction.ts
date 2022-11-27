@@ -1,14 +1,14 @@
 import { DB } from '../db'
 
-export type GetDeviceActionParams = {
+export type DeleteDeviceActionParams = {
   id: string
 }
 
 const getDeviceAction =
   (db: DB) =>
-  async ({ id }: GetDeviceActionParams) => {
+  async ({ id }: DeleteDeviceActionParams) => {
     const { Device } = db.models
-    return Device.findById(id)
+    return Device.findByIdAndDelete(id)
   }
 
 export default getDeviceAction

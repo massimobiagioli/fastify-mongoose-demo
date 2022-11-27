@@ -6,9 +6,9 @@ export type CreateDeviceActionParams = {
 }
 
 const createDeviceAction =
-  (db: DB) => async (params: CreateDeviceActionParams) => {
+  (db: DB) => async (data: CreateDeviceActionParams) => {
     const { Device } = db.models
-    const device = Device.addOne(params)
+    const device = Device.addOne(data)
     await device.save()
     return device
   }
