@@ -9,6 +9,7 @@ import { DeviceAttrs } from '../db/model/device'
 import createDeviceAction from '../actions/createDeviceAction'
 import listDevicesAction from '../actions/listDevicesAction'
 import getDeviceAction from '../actions/getDeviceAction'
+import updateDeviceAction from '../actions/updateDeviceAction'
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -67,6 +68,25 @@ const DeviceRoutePlugin: FastifyPluginAsync = async (
         return reply.send(500)
       }
     },
+  )
+
+  server.put<{ Params: deviceParams; Body: DeviceAttrs }>(
+    '/api/devices/:id',
+    {},
+    async (request, reply) => {
+      try {
+        const id = request.params.id
+        const action = updateDeviceAction(server.db)
+        const device = await action({ id, data: request.body })
+        if (!device) {
+          return reply.send(404)
+        }
+        return reply.code(200).send(device)
+      } catch (error) {
+        request.log.error(error)
+        return reply.send(500)
+      }
+    }
   )
 }
 
