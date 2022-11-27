@@ -6,12 +6,12 @@ import {
 import fp from 'fastify-plugin'
 import { DB } from '../db'
 import { DeviceAttrs } from '../db/model/device'
-import createDeviceAction from '../actions/createDeviceAction'
-import listDevicesAction from '../actions/listDevicesAction'
-import getDeviceAction from '../actions/getDeviceAction'
-import updateDeviceAction from '../actions/updateDeviceAction'
-import deleteDeviceAction from '../actions/deleteDeviceAction'
-import changeDeviceActivationStatusAction from '../actions/changeDeviceActivationStatusAction'
+import createDeviceAction from '../action/createDeviceAction'
+import listDevicesAction from '../action/listDevicesAction'
+import getDeviceAction from '../action/getDeviceAction'
+import updateDeviceAction from '../action/updateDeviceAction'
+import deleteDeviceAction from '../action/deleteDeviceAction'
+import changeDeviceActivationStatusAction from '../action/changeDeviceActivationStatusAction'
 
 declare module 'fastify' {
   export interface FastifyInstance {
