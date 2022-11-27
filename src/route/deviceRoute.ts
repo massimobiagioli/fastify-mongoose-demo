@@ -11,6 +11,7 @@ import listDevicesAction from '../actions/listDevicesAction'
 import getDeviceAction from '../actions/getDeviceAction'
 import updateDeviceAction from '../actions/updateDeviceAction'
 import deleteDeviceAction from '../actions/deleteDeviceAction'
+import changeDeviceActivationStatusAction from '../actions/changeDeviceActivationStatusAction'
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -98,6 +99,44 @@ const DeviceRoutePlugin: FastifyPluginAsync = async (
         const id = request.params.id
         const action = deleteDeviceAction(server.db)
         const device = await action({ id })
+        if (!device) {
+          return reply.send(404)
+        }
+        return reply.code(200).send(device)
+      } catch (error) {
+        request.log.error(error)
+        return reply.send(500)
+      }
+    },
+  )
+
+  server.patch<{ Params: deviceParams }>(
+    '/api/devices/:id/activate',
+    {},
+    async (request, reply) => {
+      try {
+        const id = request.params.id
+        const action = changeDeviceActivationStatusAction(server.db)
+        const device = await action({ id, active: true })
+        if (!device) {
+          return reply.send(404)
+        }
+        return reply.code(200).send(device)
+      } catch (error) {
+        request.log.error(error)
+        return reply.send(500)
+      }
+    },
+  )
+
+  server.patch<{ Params: deviceParams }>(
+    '/api/devices/:id/deactivate',
+    {},
+    async (request, reply) => {
+      try {
+        const id = request.params.id
+        const action = changeDeviceActivationStatusAction(server.db)
+        const device = await action({ id, active: false })
         if (!device) {
           return reply.send(404)
         }
