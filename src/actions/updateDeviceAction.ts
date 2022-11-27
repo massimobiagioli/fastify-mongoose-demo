@@ -1,18 +1,20 @@
 import { DB } from '../db'
 
 export type UpdateDeviceData = {
-    name: string
-    address: string
+  name: string
+  address: string
 }
 
 export type UpdateDeviceActionParams = {
-  id: string,
+  id: string
   data: UpdateDeviceData
 }
 
-const updateDeviceAction = (db: DB) => async ({id, data}: UpdateDeviceActionParams) => {
-  const { Device } = db.models
-  return Device.findByIdAndUpdate(id, data, {new: true})
-}
+const updateDeviceAction =
+  (db: DB) =>
+  async ({ id, data }: UpdateDeviceActionParams) => {
+    const { Device } = db.models
+    return Device.findByIdAndUpdate(id, data, { new: true })
+  }
 
 export default updateDeviceAction

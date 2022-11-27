@@ -86,7 +86,7 @@ const DeviceRoutePlugin: FastifyPluginAsync = async (
         request.log.error(error)
         return reply.send(500)
       }
-    }
+    },
   )
 }
 
