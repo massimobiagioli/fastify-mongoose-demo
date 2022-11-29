@@ -31,10 +31,8 @@ const DBPlugin: FastifyPluginAsync<DBOptions> = async (
 
     const models: Models = { Device }
 
-    fastify
-      .decorate('db', { models })
-      .addHook('onClose', () => {
-        db.connection.close()
+    fastify.decorate('db', { models }).addHook('onClose', () => {
+      db.connection.close()
     })
   } catch (error) {
     console.error(error)
