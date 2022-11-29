@@ -27,11 +27,15 @@ const DBPlugin: FastifyPluginAsync<DBOptions> = async (
       fastify.log.error({ actor: 'MongoDB' }, 'disconnected')
     })
 
-    await mongoose.connect(options.uri)
+    const db = await mongoose.connect(options.uri)
 
     const models: Models = { Device }
 
-    fastify.decorate('db', { models })
+    fastify
+      .decorate('db', { models })
+      .addHook('onClose', () => {
+        db.connection.close()
+    })
   } catch (error) {
     console.error(error)
   }

@@ -4,4 +4,4 @@ node_modules
 build
 .env
 .husky
-
+.nyc_output/

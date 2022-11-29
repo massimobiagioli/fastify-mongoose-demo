@@ -1,4 +1,4 @@
-.PHONY: start stop logs status mongo-shell app-build app-dev app-start lint lint-and-fix format husky help
+.PHONY: start stop logs status mongo-shell app-build app-dev app-start test-unit test-integration lint lint-and-fix format husky help
 .DEFAULT_GOAL := help
 run-docker-compose = docker compose -f docker-compose.yml
 
@@ -26,6 +26,12 @@ app-dev: # Run app in development mode
 
 app-start: # Start app in production mode
 	npm start
+
+test-unit: # Run unit tests
+	npm run test-unit
+
+test-integration: # Run integration tests
+	npm run test-integration
 
 lint: # Run linter
 	npm run lint
