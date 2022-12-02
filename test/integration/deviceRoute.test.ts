@@ -71,6 +71,29 @@ test('list all devices', async t => {
     t.equal(devices.length, 2, 'returns two devices')
 })
 
+test('error list all devices', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                findAll: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'GET',
+        url: '/api/devices',
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
 test('get a devices by id', async t => {
     const app = createTestApp()
     t.teardown(app.close.bind(app))
@@ -93,7 +116,42 @@ test('get a devices by id', async t => {
     t.equal(device.address, '10.10.10.1', 'returns the devices address')
 })
 
-test('update a devices', async t => {
+test('error get a devices by not existing id', async t => {
+    const app = createTestApp()
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'GET',
+        url: '/api/devices/9990e1ce64f51baee3def999',
+    })
+
+    t.equal(response.statusCode, 404, 'returns a 404 status code')
+})
+
+test('error get a devices by id', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                getById: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'GET',
+        url: '/api/devices/6380e1ce64f51baee3def465',
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
+test('update a device', async t => {
     const app = createTestApp()
     t.teardown(app.close.bind(app))
 
@@ -118,7 +176,50 @@ test('update a devices', async t => {
     t.equal(device.name, 'Updated Device', 'returns the changed devices name')
 })
 
-test('delete a devices', async t => {
+test('error update a device', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                update: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'PUT',
+        url: '/api/devices/6380e1ce64f51baee3def465',
+        payload: {
+            name: 'Updated Device',
+            address: '10.10.10.1'
+        }
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
+test('error update a non existing device', async t => {
+    const app = createTestApp()
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'PUT',
+        url: '/api/devices/9990e1ce64f51baee3def999',
+        payload: {
+            name: 'Updated Device',
+            address: '10.10.10.1'
+        }
+    })
+
+    t.equal(response.statusCode, 404, 'returns a 404 status code')
+})
+
+test('delete a device', async t => {
     const app = createTestApp()
     t.teardown(app.close.bind(app))
 
@@ -147,7 +248,42 @@ test('delete a devices', async t => {
     t.equal(devicesAfterDeletion.length, 1, 'returns one devices after deletion')
 })
 
-test('activate a devices', async t => {
+test('error delete a device', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                remove: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'DELETE',
+        url: '/api/devices/6380e1ce64f51baee3def465',
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
+test('error delete a non existing device', async t => {
+    const app = createTestApp()
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'DELETE',
+        url: '/api/devices/9990e1ce64f51baee3def999',
+    })
+
+    t.equal(response.statusCode, 404, 'returns a 404 status code')
+})
+
+test('activate a device', async t => {
     const app = createTestApp()
     t.teardown(app.close.bind(app))
 
@@ -168,7 +304,42 @@ test('activate a devices', async t => {
     t.equal(device.isActive, true, 'returns the activation status')
 })
 
-test('deactivate a devices', async t => {
+test('error activate a device', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                activate: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'PATCH',
+        url: '/api/devices/6380e1ce64f51baee3def465/activate'
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
+test('error activate a non existing device', async t => {
+    const app = createTestApp()
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'PATCH',
+        url: '/api/devices/9990e1ce64f51baee3def999/activate'
+    })
+
+    t.equal(response.statusCode, 404, 'returns a 404 status code')
+})
+
+test('deactivate a device', async t => {
     const app = createTestApp()
     t.teardown(app.close.bind(app))
 
@@ -194,4 +365,39 @@ test('deactivate a devices', async t => {
     t.equal(response.headers['content-type'], 'application/json; charset=utf-8', 'returns a JSON content type')
     t.equal(activatedDevice.isActive, true, 'returns the activation status after activation')
     t.equal(deactivatedDevice.isActive, false, 'returns the activation status after deactivation')
+})
+
+test('error deactivate a device', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                deactivate: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'PATCH',
+        url: '/api/devices/6380e1ce64f51baee3def465/deactivate'
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
+test('error deactivate a non existing device', async t => {
+    const app = createTestApp()
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'PATCH',
+        url: '/api/devices/9990e1ce64f51baee3def999/deactivate'
+    })
+
+    t.equal(response.statusCode, 404, 'returns a 404 status code')
 })

@@ -53,12 +53,12 @@ export const DeviceRoutesPlugin: FastifyPluginAsync = async (
       try {
         const device = await Device.getById(request.params.id)
         if (!device) {
-          return reply.send(404).send()
+          return reply.code(404).send()
         }
         return reply.code(200).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.code(400).send()
+        return reply.code(500).send()
       }
     },
   )
