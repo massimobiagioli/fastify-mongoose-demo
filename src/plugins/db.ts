@@ -14,22 +14,22 @@ export interface Models {
 }
 
 const DBPlugin: FastifyPluginAsync = async (
-  fastify: FastifyInstance,
+  instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
   try {
     mongoose.connection.on('connected', () => {
-      fastify.log.info({ actor: 'MongoDB' }, 'connected')
+      instance.log.info({ actor: 'MongoDB' }, 'connected')
     })
     mongoose.connection.on('disconnected', () => {
-      fastify.log.error({ actor: 'MongoDB' }, 'disconnected')
+      instance.log.error({ actor: 'MongoDB' }, 'disconnected')
     })
 
     const db = await mongoose.connect(settings.mongoUri)
 
     const models: Models = { Device }
 
-    fastify.decorate('db', { models }).addHook('onClose', () => {
+    instance.decorate('db', { models }).addHook('onClose', () => {
       db.connection.close()
     })
   } catch (error) {

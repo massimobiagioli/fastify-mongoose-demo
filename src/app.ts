@@ -9,11 +9,11 @@ const createApp = () => {
   })
 
   app.register(autoload, {
-    dir: path.join(__dirname, 'routes'),
+    dir: path.join(__dirname, 'plugins'),
   })
 
   app.register(autoload, {
-    dir: path.join(__dirname, 'plugins'),
+    dir: path.join(__dirname, 'routes'),
   })
 
   return app
