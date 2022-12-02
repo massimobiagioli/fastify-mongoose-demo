@@ -6,11 +6,11 @@ import {
 import fp from 'fastify-plugin'
 import { DB } from '../plugins/db'
 import { DeviceAttrs } from '../models/device'
-import createDeviceService from "../services/deviceService";
+import createDeviceService from '../services/deviceService'
 
 declare module 'fastify' {
   export interface FastifyInstance {
-    db: DB,
+    db: DB
     Device: ReturnType<typeof createDeviceService>
   }
 }
@@ -20,21 +20,21 @@ interface deviceParams {
 }
 
 const DevicePlugin: FastifyPluginAsync = async (
-    instance: FastifyInstance,
-    _options: FastifyPluginOptions,
-) => {
-  instance.register(async (instance) => {
-    const {Device} = instance.db.models
-    instance.decorate('Device', createDeviceService(Device));
-    instance.register(DeviceRoutesPlugin);
-  });
-}
-
-const DeviceRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
-  const { Device } = instance;
+  instance.register(async (instance) => {
+    const { Device } = instance.db.models
+    instance.decorate('Device', createDeviceService(Device))
+    instance.register(DeviceRoutesPlugin)
+  })
+}
+
+export const DeviceRoutesPlugin: FastifyPluginAsync = async (
+  instance: FastifyInstance,
+  _options: FastifyPluginOptions,
+) => {
+  const { Device } = instance
 
   instance.get('/api/devices', {}, async (request, reply) => {
     try {
@@ -42,7 +42,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       return reply.code(200).send(devices)
     } catch (error) {
       request.log.error(error)
-      return reply.send(500)
+      return reply.code(500).send()
     }
   })
 
@@ -53,12 +53,12 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       try {
         const device = await Device.getById(request.params.id)
         if (!device) {
-          return reply.send(404)
+          return reply.send(404).send()
         }
         return reply.code(200).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.send(400)
+        return reply.code(400).send()
       }
     },
   )
@@ -72,7 +72,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         return reply.code(201).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.send(500)
+        return reply.code(500).send()
       }
     },
   )
@@ -85,12 +85,12 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         const id = request.params.id
         const device = await Device.update({ id, data: request.body })
         if (!device) {
-          return reply.send(404)
+          return reply.code(404).send()
         }
         return reply.code(200).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.send(500)
+        return reply.code(500).send()
       }
     },
   )
@@ -102,12 +102,12 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       try {
         const device = await Device.remove(request.params.id)
         if (!device) {
-          return reply.send(404)
+          return reply.code(404).send()
         }
         return reply.code(200).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.send(500)
+        return reply.code(500).send()
       }
     },
   )
@@ -119,12 +119,12 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       try {
         const device = await Device.activate(request.params.id)
         if (!device) {
-          return reply.send(404)
+          return reply.code(404).send()
         }
         return reply.code(200).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.send(500)
+        return reply.code(500).send()
       }
     },
   )
@@ -136,12 +136,12 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       try {
         const device = await Device.deactivate(request.params.id)
         if (!device) {
-          return reply.send(404)
+          return reply.code(404).send()
         }
         return reply.code(200).send(device)
       } catch (error) {
         request.log.error(error)
-        return reply.send(500)
+        return reply.code(500).send()
       }
     },
   )

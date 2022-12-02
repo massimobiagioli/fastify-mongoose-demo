@@ -1,13 +1,15 @@
 import {test, beforeEach} from "tap"
-import createApp from "../../src/app";
 import createDbFixtures from "../../src/fixture/dbFixture";
+import {createTestApp} from "../../src/helpers";
+import stub from 'sbuts'
+import {DeviceRoutesPlugin} from "../../src/routes/device";
 
 beforeEach(async () => {
     await createDbFixtures()
 })
 
 test('create new devices', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const response = await app.inject({
@@ -27,8 +29,35 @@ test('create new devices', async t => {
     t.equal(device.isActive, false, 'returns the devices activation status')
 })
 
+test('error create new devices', async t => {
+    const app = createTestApp({
+        autoLoadPlugins: false,
+        autoLoadRoutes: false,
+        decorates: {
+            'Device': {
+                create: stub().throw(new Error('test error'))
+            }
+        },
+        routes: [
+            DeviceRoutesPlugin
+        ]
+    })
+    t.teardown(app.close.bind(app))
+
+    const response = await app.inject({
+        method: 'POST',
+        url: '/api/devices',
+        payload: {
+            name: 'test-devices',
+            address: '10.10.10.10'
+        }
+    })
+
+    t.equal(response.statusCode, 500, 'returns a 500 status code')
+})
+
 test('list all devices', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const response = await app.inject({
@@ -43,7 +72,7 @@ test('list all devices', async t => {
 })
 
 test('get a devices by id', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const listDevicesResponse = await app.inject({
@@ -65,7 +94,7 @@ test('get a devices by id', async t => {
 })
 
 test('update a devices', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const listDevicesResponse = await app.inject({
@@ -90,7 +119,7 @@ test('update a devices', async t => {
 })
 
 test('delete a devices', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const listDevicesResponseBeforeDeletion = await app.inject({
@@ -119,7 +148,7 @@ test('delete a devices', async t => {
 })
 
 test('activate a devices', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const listDevicesResponse = await app.inject({
@@ -140,7 +169,7 @@ test('activate a devices', async t => {
 })
 
 test('deactivate a devices', async t => {
-    const app = createApp()
+    const app = createTestApp()
     t.teardown(app.close.bind(app))
 
     const listDevicesResponse = await app.inject({
