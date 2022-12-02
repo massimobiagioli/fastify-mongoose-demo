@@ -4,8 +4,8 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import fp from 'fastify-plugin'
-import { DB } from '../db'
-import { DeviceAttrs } from '../db/model/device'
+import { DB } from '../plugins/db'
+import { DeviceAttrs } from '../models/device'
 import createDeviceAction from '../action/createDeviceAction'
 import listDevicesAction from '../action/listDevicesAction'
 import getDeviceAction from '../action/getDeviceAction'
@@ -23,7 +23,7 @@ interface deviceParams {
   id: string
 }
 
-const DeviceRoutePlugin: FastifyPluginAsync = async (
+const DeviceRoutesPlugin: FastifyPluginAsync = async (
   server: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
@@ -149,4 +149,4 @@ const DeviceRoutePlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(DeviceRoutePlugin)
+export default fp(DeviceRoutesPlugin)

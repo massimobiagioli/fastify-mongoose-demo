@@ -1,16 +1,20 @@
 import { fastify } from 'fastify'
 import pino from 'pino'
-import db from './db'
-import deviceRoute from './route/deviceRoute'
-import { settings } from './config'
+import autoload from '@fastify/autoload'
+import path from "path";
 
 const createApp = () => {
   const app = fastify({
     logger: pino({ level: 'info' }),
   })
 
-  app.register(db, { uri: settings.mongoUri })
-  app.register(deviceRoute)
+  app.register(autoload, {
+    dir: path.join(__dirname, 'routes'),
+  })
+
+  app.register(autoload, {
+    dir: path.join(__dirname, 'plugins'),
+  })
 
   return app
 }

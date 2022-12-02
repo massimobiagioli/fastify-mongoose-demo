@@ -6,7 +6,7 @@ beforeEach(async () => {
     await createDbFixtures()
 })
 
-test('create new device', async t => {
+test('create new devices', async t => {
     const app = createApp()
     t.teardown(app.close.bind(app))
 
@@ -14,7 +14,7 @@ test('create new device', async t => {
         method: 'POST',
         url: '/api/devices',
         payload: {
-            name: 'test-device',
+            name: 'test-devices',
             address: '10.10.10.10'
         }
     })
@@ -22,9 +22,9 @@ test('create new device', async t => {
 
     t.equal(response.statusCode, 201, 'returns a 201 status code')
     t.equal(response.headers['content-type'], 'application/json; charset=utf-8', 'returns a JSON content type')
-    t.equal(device.name, 'test-device', 'returns the device name')
-    t.equal(device.address, '10.10.10.10', 'returns the device address')
-    t.equal(device.isActive, false, 'returns the device activation status')
+    t.equal(device.name, 'test-devices', 'returns the devices name')
+    t.equal(device.address, '10.10.10.10', 'returns the devices address')
+    t.equal(device.isActive, false, 'returns the devices activation status')
 })
 
 test('list all devices', async t => {
@@ -42,7 +42,7 @@ test('list all devices', async t => {
     t.equal(devices.length, 2, 'returns two devices')
 })
 
-test('get a device by id', async t => {
+test('get a devices by id', async t => {
     const app = createApp()
     t.teardown(app.close.bind(app))
 
@@ -60,11 +60,11 @@ test('get a device by id', async t => {
 
     t.equal(response.statusCode, 200, 'returns a 200 status code')
     t.equal(response.headers['content-type'], 'application/json; charset=utf-8', 'returns a JSON content type')
-    t.equal(device.name, 'First Device', 'returns the device name')
-    t.equal(device.address, '10.10.10.1', 'returns the device address')
+    t.equal(device.name, 'First Device', 'returns the devices name')
+    t.equal(device.address, '10.10.10.1', 'returns the devices address')
 })
 
-test('update a device', async t => {
+test('update a devices', async t => {
     const app = createApp()
     t.teardown(app.close.bind(app))
 
@@ -86,10 +86,10 @@ test('update a device', async t => {
 
     t.equal(response.statusCode, 200, 'returns a 200 status code')
     t.equal(response.headers['content-type'], 'application/json; charset=utf-8', 'returns a JSON content type')
-    t.equal(device.name, 'Updated Device', 'returns the changed device name')
+    t.equal(device.name, 'Updated Device', 'returns the changed devices name')
 })
 
-test('delete a device', async t => {
+test('delete a devices', async t => {
     const app = createApp()
     t.teardown(app.close.bind(app))
 
@@ -113,12 +113,12 @@ test('delete a device', async t => {
 
     t.equal(response.statusCode, 200, 'returns a 200 status code')
     t.equal(response.headers['content-type'], 'application/json; charset=utf-8', 'returns a JSON content type')
-    t.equal(device.name, 'First Device', 'returns the device name')
-    t.equal(device.address, '10.10.10.1', 'returns the device address')
-    t.equal(devicesAfterDeletion.length, 1, 'returns one device after deletion')
+    t.equal(device.name, 'First Device', 'returns the devices name')
+    t.equal(device.address, '10.10.10.1', 'returns the devices address')
+    t.equal(devicesAfterDeletion.length, 1, 'returns one devices after deletion')
 })
 
-test('activate a device', async t => {
+test('activate a devices', async t => {
     const app = createApp()
     t.teardown(app.close.bind(app))
 
@@ -139,7 +139,7 @@ test('activate a device', async t => {
     t.equal(device.isActive, true, 'returns the activation status')
 })
 
-test('deactivate a device', async t => {
+test('deactivate a devices', async t => {
     const app = createApp()
     t.teardown(app.close.bind(app))
 

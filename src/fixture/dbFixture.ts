@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { Device } from '../db/model/device'
+import { Device } from '../models/device'
 import { settings } from '../config'
 
 const createDbFixtures = async () => {

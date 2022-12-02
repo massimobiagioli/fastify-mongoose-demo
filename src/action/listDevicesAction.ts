@@ -1,4 +1,4 @@
-import { DB } from '../db'
+import { DB } from '../plugins/db'
 
 const listDevicesAction = (db: DB) => async () => {
   const { Device } = db.models

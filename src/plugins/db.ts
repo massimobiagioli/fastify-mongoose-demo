@@ -2,7 +2,8 @@ import { FastifyInstance } from 'fastify'
 import { FastifyPluginAsync, FastifyPluginOptions } from 'fastify'
 import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
-import { Device, DeviceModel } from './model/device'
+import { Device, DeviceModel } from '../models/device'
+import {settings} from "../config";
 
 export interface DB {
   models: Models
@@ -12,12 +13,9 @@ export interface Models {
   Device: DeviceModel
 }
 
-export interface DBOptions {
-  uri: string
-}
-const DBPlugin: FastifyPluginAsync<DBOptions> = async (
+const DBPlugin: FastifyPluginAsync = async (
   fastify: FastifyInstance,
-  options: FastifyPluginOptions,
+  _options: FastifyPluginOptions,
 ) => {
   try {
     mongoose.connection.on('connected', () => {
@@ -27,7 +25,7 @@ const DBPlugin: FastifyPluginAsync<DBOptions> = async (
       fastify.log.error({ actor: 'MongoDB' }, 'disconnected')
     })
 
-    const db = await mongoose.connect(options.uri)
+    const db = await mongoose.connect(settings.mongoUri)
 
     const models: Models = { Device }
 

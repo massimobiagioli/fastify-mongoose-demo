@@ -1,4 +1,4 @@
-import { DB } from '../db'
+import { DB } from '../plugins/db'
 
 export type UpdateDeviceData = {
   name: string
