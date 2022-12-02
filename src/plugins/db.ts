@@ -3,7 +3,7 @@ import { FastifyPluginAsync, FastifyPluginOptions } from 'fastify'
 import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
 import { Device, DeviceModel } from '../models/device'
-import {settings} from "../config";
+import { settings } from '../config'
 
 export interface DB {
   models: Models

@@ -1,7 +1,7 @@
 import { fastify } from 'fastify'
 import pino from 'pino'
 import autoload from '@fastify/autoload'
-import path from "path";
+import path from 'path'
 
 const createApp = () => {
   const app = fastify({
