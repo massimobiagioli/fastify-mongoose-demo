@@ -33,7 +33,7 @@ const DBPlugin: FastifyPluginAsync = async (
       db.connection.close()
     })
   } catch (error) {
-    console.error(error)
+    instance.log.error('Error connecting to MongoDB', error)
   }
 }
 

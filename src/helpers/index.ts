@@ -1,7 +1,6 @@
 import { fastify, FastifyPluginAsync } from 'fastify'
 import autoload from '@fastify/autoload'
 import path from 'path'
-import { DeviceRoutesPlugin } from '../routes/device'
 
 export type CreateTestAppOptions = {
   autoLoadPlugins?: boolean

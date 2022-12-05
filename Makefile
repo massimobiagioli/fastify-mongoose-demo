@@ -1,8 +1,8 @@
-.PHONY: start stop logs status mongo-shell app-build app-dev app-start test-unit test-integration lint lint-and-fix format husky help
+.PHONY: start stop logs status mongo-shell app-build app-dev app-start test-unit test-integration test lint lint-and-fix format husky help
 .DEFAULT_GOAL := help
 run-docker-compose = docker compose -f docker-compose.yml
 
-start: # Start containers and tail logs
+up: # Start containers and tail logs
 	$(run-docker-compose) up -d
 	make logs
 
@@ -32,6 +32,9 @@ test-unit: # Run unit tests
 
 test-integration: # Run integration tests
 	npm run test-integration
+
+test: # Run all tests
+	npm run test
 
 lint: # Run linter
 	npm run lint
