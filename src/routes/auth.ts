@@ -5,6 +5,19 @@ import {
 } from 'fastify'
 import fp from 'fastify-plugin'
 
+declare module '@fastify/jwt' {
+  interface FastifyJWT {
+    payload: {
+      userId: string
+    }
+    user: {
+      id: string
+      name: string
+      email: string
+    }
+  }
+}
+
 export type LoginAttrs = {
   username: string
   password: string
@@ -19,10 +32,7 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
     {},
     async (request, reply) => {
       try {
-        const payload = {
-          username: 'guest',
-        }
-        const token = instance.jwt.sign({ payload })
+        const token = instance.jwt.sign({ userId: request.body.username })
         reply.send({ token })
       } catch (error) {
         request.log.error(error)

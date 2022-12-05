@@ -1,6 +1,14 @@
-import { fastify, FastifyPluginAsync } from 'fastify'
+import {
+  fastify,
+  FastifyPluginAsync,
+  FastifyReply,
+  FastifyRequest,
+} from 'fastify'
 import autoload from '@fastify/autoload'
 import path from 'path'
+import JWT from '@fastify/jwt'
+import { settings } from '../config'
+import { verifyToken } from '../services/authService'
 
 export type CreateTestAppOptions = {
   autoLoadPlugins?: boolean
@@ -20,6 +28,10 @@ export const createTestApp = (
   createTestAppOptions: CreateTestAppOptions = defaultCreateTestAppOptions,
 ) => {
   const app = fastify()
+
+  app.register(JWT, {
+    secret: settings.jwtSecret,
+  })
 
   const options = {
     ...defaultCreateTestAppOptions,
@@ -47,6 +59,8 @@ export const createTestApp = (
       app.register(route)
     })
   }
+
+  app.decorate('authenticate', verifyToken)
 
   return app
 }

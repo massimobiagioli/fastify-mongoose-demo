@@ -12,6 +12,10 @@ declare module 'fastify' {
   export interface FastifyInstance {
     db: DB
     Device: ReturnType<typeof createDeviceService>
+    authenticate: (
+      request: FastifyRequest,
+      reply: FastifyReply,
+    ) => Promise<void>
   }
 }
 
@@ -36,15 +40,24 @@ export const DeviceRoutesPlugin: FastifyPluginAsync = async (
 ) => {
   const { Device } = instance
 
-  instance.get('/api/devices', {}, async (request, reply) => {
-    try {
-      const devices = await Device.findAll()
-      return reply.code(200).send(devices)
-    } catch (error) {
-      request.log.error(error)
-      return reply.code(500).send()
-    }
-  })
+  instance.get(
+    '/api/devices',
+    {
+      onRequest: [instance.authenticate],
+    },
+    async (request, reply) => {
+      try {
+        console.log('*********************')
+        console.log('request.user', request.user)
+        console.log('*********************')
+        const devices = await Device.findAll()
+        return reply.code(200).send(devices)
+      } catch (error) {
+        request.log.error(error)
+        return reply.code(500).send()
+      }
+    },
+  )
 
   instance.get<{ Params: deviceParams }>(
     '/api/devices/:id',
