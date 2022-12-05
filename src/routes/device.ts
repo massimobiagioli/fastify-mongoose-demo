@@ -2,6 +2,7 @@ import {
   FastifyInstance,
   FastifyPluginOptions,
   FastifyPluginAsync,
+  fastify,
 } from 'fastify'
 import fp from 'fastify-plugin'
 import { DeviceAttrs } from '../models'
@@ -28,15 +29,21 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
 ) => {
   const { Device } = instance
 
-  instance.get('/api/devices', {}, async (request, reply) => {
-    try {
-      const devices = await Device.findAll()
-      return reply.code(200).send(devices)
-    } catch (error) {
-      request.log.error(error)
-      return reply.code(500).send()
-    }
-  })
+  instance.get(
+    '/api/devices',
+    {
+      onRequest: [instance.authenticate],
+    },
+    async (request, reply) => {
+      try {
+        const devices = await Device.findAll()
+        return reply.code(200).send(devices)
+      } catch (error) {
+        request.log.error(error)
+        return reply.code(500).send()
+      }
+    },
+  )
 
   instance.get<{ Params: deviceParams }>(
     '/api/devices/:id',

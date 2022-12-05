@@ -20,14 +20,20 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
-  instance.get('/api/users/me', {}, async (request, reply) => {
-    try {
-      return reply.code(200).send(request.user)
-    } catch (error) {
-      request.log.error(error)
-      return reply.code(500).send()
-    }
-  })
+  instance.get(
+    '/api/users/me',
+    {
+      onRequest: [instance.authenticate],
+    },
+    async (request, reply) => {
+      try {
+        return reply.code(200).send(request.user)
+      } catch (error) {
+        request.log.error(error)
+        return reply.code(500).send()
+      }
+    },
+  )
 }
 
 export default fp(UserPlugin)
