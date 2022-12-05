@@ -1,10 +1,25 @@
-import { fastify, FastifyReply, FastifyRequest } from 'fastify'
+import { fastify } from 'fastify'
 import pino from 'pino'
 import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from './config'
-import { verifyToken } from './services/authService'
+import { DB } from './plugins/db'
+import createDeviceService from './services/deviceService'
+import createUserService from './services/userService'
+
+declare module 'fastify' {
+  export interface FastifyInstance {
+    db: DB
+    User: ReturnType<typeof createUserService>
+    Device: ReturnType<typeof createDeviceService>
+    tester: string
+    authenticate: (
+      request: FastifyRequest,
+      reply: FastifyReply,
+    ) => Promise<void>
+  }
+}
 
 const createApp = () => {
   const app = fastify({
@@ -22,8 +37,6 @@ const createApp = () => {
   app.register(autoload, {
     dir: path.join(__dirname, 'routes'),
   })
-
-  app.decorate('authenticate', verifyToken)
 
   return app
 }

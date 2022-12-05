@@ -4,20 +4,8 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import fp from 'fastify-plugin'
-import { DB } from '../plugins/db'
-import { DeviceAttrs } from '../models/device'
+import { DeviceAttrs } from '../models'
 import createDeviceService from '../services/deviceService'
-
-declare module 'fastify' {
-  export interface FastifyInstance {
-    db: DB
-    Device: ReturnType<typeof createDeviceService>
-    authenticate: (
-      request: FastifyRequest,
-      reply: FastifyReply,
-    ) => Promise<void>
-  }
-}
 
 interface deviceParams {
   id: string
@@ -34,30 +22,21 @@ const DevicePlugin: FastifyPluginAsync = async (
   })
 }
 
-export const DeviceRoutesPlugin: FastifyPluginAsync = async (
+const DeviceRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
   const { Device } = instance
 
-  instance.get(
-    '/api/devices',
-    {
-      onRequest: [instance.authenticate],
-    },
-    async (request, reply) => {
-      try {
-        console.log('*********************')
-        console.log('request.user', request.user)
-        console.log('*********************')
-        const devices = await Device.findAll()
-        return reply.code(200).send(devices)
-      } catch (error) {
-        request.log.error(error)
-        return reply.code(500).send()
-      }
-    },
-  )
+  instance.get('/api/devices', {}, async (request, reply) => {
+    try {
+      const devices = await Device.findAll()
+      return reply.code(200).send(devices)
+    } catch (error) {
+      request.log.error(error)
+      return reply.code(500).send()
+    }
+  })
 
   instance.get<{ Params: deviceParams }>(
     '/api/devices/:id',

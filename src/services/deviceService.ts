@@ -1,4 +1,4 @@
-import { DeviceModel } from '../models/device'
+import { DeviceModel } from '../models'
 
 export type CreateDevice = {
   name: string

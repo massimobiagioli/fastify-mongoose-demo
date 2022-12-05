@@ -2,14 +2,15 @@ import { FastifyInstance } from 'fastify'
 import { FastifyPluginAsync, FastifyPluginOptions } from 'fastify'
 import fp from 'fastify-plugin'
 import mongoose from 'mongoose'
-import { Device, DeviceModel } from '../models/device'
 import { settings } from '../config'
+import { User, UserModel, Device, DeviceModel } from '../models'
 
 export interface DB {
   models: Models
 }
 
 export interface Models {
+  User: UserModel
   Device: DeviceModel
 }
 
@@ -27,7 +28,7 @@ const DBPlugin: FastifyPluginAsync = async (
 
     const db = await mongoose.connect(settings.mongoUri)
 
-    const models: Models = { Device }
+    const models: Models = { User, Device }
 
     instance.decorate('db', { models }).addHook('onClose', () => {
       db.connection.close()

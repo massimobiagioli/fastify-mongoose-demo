@@ -1,14 +1,8 @@
-import {
-  fastify,
-  FastifyPluginAsync,
-  FastifyReply,
-  FastifyRequest,
-} from 'fastify'
+import { fastify, FastifyPluginAsync } from 'fastify'
 import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from '../config'
-import { verifyToken } from '../services/authService'
 
 export type CreateTestAppOptions = {
   autoLoadPlugins?: boolean
@@ -59,8 +53,6 @@ export const createTestApp = (
       app.register(route)
     })
   }
-
-  app.decorate('authenticate', verifyToken)
 
   return app
 }

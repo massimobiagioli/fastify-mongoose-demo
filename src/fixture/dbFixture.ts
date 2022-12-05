@@ -1,12 +1,17 @@
 import mongoose from 'mongoose'
-import { Device } from '../models/device'
+import { User, Device } from '../models'
 import { settings } from '../config'
 
-const createDbFixtures = async () => {
-  const client = await mongoose.connect(settings.mongoUri)
+async function createUsers() {
+  await new User({
+    username: 'guest',
+    firstname: 'John',
+    lastname: 'Doe',
+    email: 'john.doe@email.com',
+  }).save()
+}
 
-  await client.connection.db.dropDatabase()
-
+async function createDevices() {
   await new Device({
     name: 'First Device',
     address: '10.10.10.1',
@@ -16,6 +21,15 @@ const createDbFixtures = async () => {
     name: 'Second Device',
     address: '10.10.10.2',
   }).save()
+}
+
+const createDbFixtures = async () => {
+  const client = await mongoose.connect(settings.mongoUri)
+
+  await client.connection.db.dropDatabase()
+
+  await createUsers()
+  await createDevices()
 
   client.connection.close()
 }
