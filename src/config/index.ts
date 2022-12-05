@@ -7,10 +7,12 @@ if (process.env.ENV == 'test') {
 }
 
 const DEFAULT_SERVER_PORT = 3000
+const DEFAULT_JWT_SECRET = 'secret'
 
 export interface Settings {
   serverPort: number
   mongoUri: string
+  jwtSecret: string
 }
 
 export const settings: Settings = {
@@ -19,4 +21,5 @@ export const settings: Settings = {
     : DEFAULT_SERVER_PORT,
 
   mongoUri: process.env.MONGO_URI || '',
+  jwtSecret: process.env.JWT_SECRET || DEFAULT_JWT_SECRET,
 }
