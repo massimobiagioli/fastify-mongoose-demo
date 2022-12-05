@@ -8,13 +8,7 @@ import fp from 'fastify-plugin'
 declare module '@fastify/jwt' {
   interface FastifyJWT {
     payload: {
-      userId: string
-    }
-    user: {
       username: string
-      firstname: string
-      lastname: string
-      email: string
     }
   }
 }
@@ -33,7 +27,7 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
     {},
     async (request, reply) => {
       try {
-        const token = instance.jwt.sign({ userId: request.body.username })
+        const token = instance.jwt.sign({ username: request.body.username })
         reply.send({ token })
       } catch (error) {
         request.log.error(error)

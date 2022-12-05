@@ -20,6 +20,8 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
+  const { User } = instance
+
   instance.get(
     '/api/users/me',
     {
@@ -27,7 +29,8 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
     },
     async (request, reply) => {
       try {
-        return reply.code(200).send(request.user)
+        const user = await User.getByUsername(request.user.username)
+        return reply.code(200).send(user)
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()

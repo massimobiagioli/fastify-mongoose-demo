@@ -3,6 +3,7 @@ import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from '../config'
+import authenticate from '../decorators/authenticate'
 
 export type CreateTestAppOptions = {
   autoLoadPlugins?: boolean
@@ -53,6 +54,8 @@ export const createTestApp = (
       app.register(route)
     })
   }
+
+  app.decorate('authenticate', authenticate)
 
   return app
 }

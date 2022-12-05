@@ -2,7 +2,6 @@ import {
   FastifyInstance,
   FastifyPluginOptions,
   FastifyPluginAsync,
-  fastify,
 } from 'fastify'
 import fp from 'fastify-plugin'
 import { DeviceAttrs } from '../models'
