@@ -1,4 +1,4 @@
-.PHONY: start stop logs status mongo-shell app-build app-dev app-start test-unit test-integration test lint lint-and-fix format husky help
+.PHONY: start down logs status mongo-shell app-build app-dev app-start test-unit test-integration test lint lint-and-fix format husky help
 .DEFAULT_GOAL := help
 run-docker-compose = docker compose -f docker-compose.yml
 
@@ -6,7 +6,7 @@ up: # Start containers and tail logs
 	$(run-docker-compose) up -d
 	make logs
 
-stop: # Stop all containers
+down: # Stop all containers
 	$(run-docker-compose) down
 
 logs: # Tail container logs

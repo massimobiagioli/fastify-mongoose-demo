@@ -18,10 +18,33 @@ export type LoginAttrs = {
   password: string
 }
 
+export type RegisterAttrs = {
+  username: string
+  firstname: string
+  lastname: string
+  email: string
+}
+
 export const AuthRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
+  const { User } = instance
+
+  instance.post<{ Body: RegisterAttrs }>(
+    '/api/auth/register',
+    {},
+    async (request, reply) => {
+      try {
+        await User.create(request.body)
+        reply.code(201).send()
+      } catch (error) {
+        request.log.error(error)
+        return reply.code(500).send()
+      }
+    },
+  )
+
   instance.post<{ Body: LoginAttrs }>(
     '/api/auth/login',
     {},
@@ -37,4 +60,7 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(AuthRoutesPlugin)
+export default fp(AuthRoutesPlugin, {
+  name: 'auth-routes-plugin',
+  dependencies: ['user-plugin'],
+})

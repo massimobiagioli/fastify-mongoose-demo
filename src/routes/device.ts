@@ -11,17 +11,6 @@ interface deviceParams {
   id: string
 }
 
-const DevicePlugin: FastifyPluginAsync = async (
-  instance: FastifyInstance,
-  _options: FastifyPluginOptions,
-) => {
-  instance.register(async (instance) => {
-    const { Device } = instance.db.models
-    instance.decorate('Device', createDeviceService(Device))
-    instance.register(DeviceRoutesPlugin)
-  })
-}
-
 const DeviceRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
@@ -145,4 +134,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(DevicePlugin)
+export default fp(DeviceRoutesPlugin, {
+  name: 'device-route-plugin',
+  dependencies: ['device-plugin'],
+})

@@ -4,18 +4,7 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import fp from 'fastify-plugin'
-import createUserService from '../services/userService'
 
-const UserPlugin: FastifyPluginAsync = async (
-  instance: FastifyInstance,
-  _options: FastifyPluginOptions,
-) => {
-  instance.register(async (instance) => {
-    const { User } = instance.db.models
-    instance.decorate('User', createUserService(User))
-    instance.register(UserRoutesPlugin)
-  })
-}
 const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
@@ -39,4 +28,7 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(UserPlugin)
+export default fp(UserRoutesPlugin, {
+  name: 'user-routes-plugin',
+  dependencies: ['user-plugin'],
+})

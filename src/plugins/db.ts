@@ -38,4 +38,6 @@ const DBPlugin: FastifyPluginAsync = async (
   }
 }
 
-export default fp(DBPlugin)
+export default fp(DBPlugin, {
+  name: 'db-plugin',
+})
