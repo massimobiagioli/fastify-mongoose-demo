@@ -5,7 +5,6 @@ import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from './config'
 import { DB } from './plugins/db'
-import authenticate from './decorators/authenticate'
 import { createDeviceService } from './plugins/device'
 import { createUserService } from './plugins/user'
 
@@ -38,8 +37,6 @@ const createApp = () => {
   app.register(autoload, {
     dir: path.join(__dirname, 'routes'),
   })
-
-  app.decorate('authenticate', authenticate)
 
   return app
 }
