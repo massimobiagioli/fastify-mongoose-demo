@@ -24,6 +24,9 @@ export const createUserService = (User: UserModel) => {
       await user.save()
       return user
     },
+    checkPassword: async (username: string, password: string) => {
+      return User.verifyPassword(username, password)
+    },
   }
 }
 

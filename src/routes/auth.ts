@@ -57,7 +57,11 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
     {},
     async (request, reply) => {
       try {
-        const token = instance.jwt.sign({ username: request.body.username })
+        const { username, password } = request.body
+        if (!(await User.checkPassword(username, password))) {
+          return reply.code(401).send()
+        }
+        const token = instance.jwt.sign({ username })
         reply.send({ token })
       } catch (error) {
         request.log.error(error)
