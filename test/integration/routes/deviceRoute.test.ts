@@ -2,7 +2,7 @@ import {test, beforeEach} from "tap"
 import createDbFixtures from "../../../src/fixture/dbFixture";
 import {createTestApp} from "../../../src/helpers";
 import stub from 'sbuts'
-import {DeviceRoutesPlugin} from "../../../src/routes/device";
+import {DeviceRoutesPlugin} from "../../../src/routes/devices";
 
 beforeEach(async () => {
     await createDbFixtures()

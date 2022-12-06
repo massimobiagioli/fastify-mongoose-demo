@@ -57,6 +57,4 @@ const DevicePlugin: FastifyPluginAsync = async (
   instance.decorate('Device', createDeviceService(Device))
 }
 
-export default fp(DevicePlugin, {
-  name: 'device-plugin',
-})
+export default fp(DevicePlugin)

@@ -3,7 +3,6 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
-import fp from 'fastify-plugin'
 
 const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
@@ -31,7 +30,4 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(UserRoutesPlugin, {
-  name: 'user-routes-plugin',
-  dependencies: ['user-plugin'],
-})
+export default UserRoutesPlugin

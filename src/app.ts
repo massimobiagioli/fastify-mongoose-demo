@@ -5,8 +5,8 @@ import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from './config'
 import { DB } from './plugins/db'
-import { createDeviceService } from './plugins/device'
 import { createUserService } from './plugins/user'
+import { createDeviceService } from './plugins/device'
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -18,6 +18,20 @@ declare module 'fastify' {
       request: FastifyRequest,
       reply: FastifyReply,
     ) => Promise<void>
+  }
+}
+
+declare module '@fastify/jwt' {
+  interface FastifyJWT {
+    payload: {
+      username: string
+    }
+    user: {
+      username: string
+      firstname: string
+      lastname: string
+      email: string
+    }
   }
 }
 
@@ -36,6 +50,7 @@ const createApp = () => {
 
   app.register(autoload, {
     dir: path.join(__dirname, 'routes'),
+    options: { prefix: '/api' },
   })
 
   return app

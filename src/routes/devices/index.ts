@@ -3,8 +3,7 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
-import fp from 'fastify-plugin'
-import { DeviceAttrs } from '../models'
+import { DeviceAttrs } from '../../models'
 
 interface deviceParams {
   id: string
@@ -17,7 +16,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   const { Device } = instance
 
   instance.get(
-    '/api/devices',
+    '/devices',
     {
       onRequest: [instance.authenticate],
     },
@@ -33,7 +32,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.get<{ Params: deviceParams }>(
-    '/api/devices/:id',
+    '/devices/:id',
     {},
     async (request, reply) => {
       try {
@@ -50,7 +49,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.post<{ Body: DeviceAttrs }>(
-    '/api/devices',
+    '/devices',
     {},
     async (request, reply) => {
       try {
@@ -64,7 +63,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.put<{ Params: deviceParams; Body: DeviceAttrs }>(
-    '/api/devices/:id',
+    '/devices/:id',
     {},
     async (request, reply) => {
       try {
@@ -82,7 +81,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.delete<{ Params: deviceParams }>(
-    '/api/devices/:id',
+    '/devices/:id',
     {},
     async (request, reply) => {
       try {
@@ -99,7 +98,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.patch<{ Params: deviceParams }>(
-    '/api/devices/:id/activate',
+    '/devices/:id/activate',
     {},
     async (request, reply) => {
       try {
@@ -116,7 +115,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.patch<{ Params: deviceParams }>(
-    '/api/devices/:id/deactivate',
+    '/devices/:id/deactivate',
     {},
     async (request, reply) => {
       try {
@@ -133,7 +132,4 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(DeviceRoutesPlugin, {
-  name: 'device-route-plugin',
-  dependencies: ['device-plugin'],
-})
+export default DeviceRoutesPlugin
