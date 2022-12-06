@@ -34,6 +34,7 @@ export const userSchema: Schema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
     firstname: {
       type: String,
@@ -74,7 +75,7 @@ userSchema.statics.verifyPassword = async (
   username: string,
   password: string,
 ) => {
-  const user = await User.findOne({ username })
+  const user = await User.findOne({ username }).select('+password').exec()
   return user?.password === createPasswordHash(username, password)
 }
 

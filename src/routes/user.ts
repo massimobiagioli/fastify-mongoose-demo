@@ -19,6 +19,9 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
     async (request, reply) => {
       try {
         const user = await User.getByUsername(request.user.username)
+        if (!user) {
+          return reply.code(404).send({ message: 'User not found' })
+        }
         return reply.code(200).send(user)
       } catch (error) {
         request.log.error(error)
