@@ -7,21 +7,31 @@ import {
 } from 'fastify'
 import fp from 'fastify-plugin'
 
-const authenticate = async (request: FastifyRequest, reply: FastifyReply) => {
-  try {
-    await request.jwtVerify()
-  } catch (err) {
-    reply.send(err)
-  }
-}
-
 const AuthPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
-  instance.decorate('authenticate', authenticate)
+  const { User } = instance
+  instance.decorate(
+    'authenticate',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      request.jwtVerify(async (err, decoded) => {
+        if (err) {
+          reply.send(err)
+        }
+        const user = await User.getByUsername(decoded.username)
+        return {
+          username: user?.username,
+          firstname: user?.firstname,
+          lastname: user?.lastname,
+          email: user?.email,
+        }
+      })
+    },
+  )
 }
 
 export default fp(AuthPlugin, {
   name: 'auth-plugin',
+  dependencies: ['user-plugin'],
 })
