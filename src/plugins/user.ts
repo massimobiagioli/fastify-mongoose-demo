@@ -8,6 +8,7 @@ import { UserModel } from '../models'
 
 export type CreateUser = {
   username: string
+  password: string
   firstname: string
   lastname: string
   email: string

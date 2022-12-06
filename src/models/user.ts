@@ -2,6 +2,7 @@ import { Schema, Document, model, Model } from 'mongoose'
 
 export interface UserAttrs {
   username: string
+  password: string
   firstname: string
   lastname: string
   email: string
@@ -13,6 +14,7 @@ export interface UserModel extends Model<UserDocument> {
 
 export interface UserDocument extends Document {
   username: string
+  password: string
   firstname: string
   lastname: string
   email: string
@@ -23,6 +25,10 @@ export interface UserDocument extends Document {
 export const userSchema: Schema = new Schema(
   {
     username: {
+      type: String,
+      required: true,
+    },
+    password: {
       type: String,
       required: true,
     },
@@ -45,7 +51,11 @@ export const userSchema: Schema = new Schema(
 )
 
 userSchema.statics.addOne = (doc: UserAttrs) => {
-  return new User(doc)
+  const newDoc = {
+    ...doc,
+    password: 'hashedPassword',
+  }
+  return new User(newDoc)
 }
 
 export const User = model<UserDocument, UserModel>('User', userSchema)

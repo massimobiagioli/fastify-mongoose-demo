@@ -26,6 +26,7 @@ export type LoginAttrs = {
 
 export type RegisterAttrs = {
   username: string
+  password: string
   firstname: string
   lastname: string
   email: string
