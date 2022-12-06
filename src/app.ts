@@ -5,9 +5,9 @@ import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from './config'
 import { DB } from './plugins/db'
-import createDeviceService from './services/deviceService'
-import createUserService from './services/userService'
 import authenticate from './decorators/authenticate'
+import { createDeviceService } from './plugins/device'
+import { createUserService } from './plugins/user'
 
 declare module 'fastify' {
   export interface FastifyInstance {

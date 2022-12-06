@@ -5,7 +5,6 @@ import {
 } from 'fastify'
 import fp from 'fastify-plugin'
 import { DeviceAttrs } from '../models'
-import createDeviceService from '../services/deviceService'
 
 interface deviceParams {
   id: string
