@@ -18,6 +18,7 @@ const AuthPlugin: FastifyPluginAsync = async (
       request.jwtVerify(async (err, decoded) => {
         if (err) {
           reply.send(err)
+          return
         }
         const user = await User.getByUsername(decoded.username)
         return {
