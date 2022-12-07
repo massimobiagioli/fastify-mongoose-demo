@@ -11,7 +11,7 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
   const { User } = instance
 
   instance.get(
-    '/api/users/me',
+    '/me',
     {
       onRequest: [instance.authenticate],
     },

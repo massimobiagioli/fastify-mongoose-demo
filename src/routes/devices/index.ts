@@ -16,7 +16,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   const { Device } = instance
 
   instance.get(
-    '/devices',
+    '/',
     {
       onRequest: [instance.authenticate],
     },
@@ -32,8 +32,10 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.get<{ Params: deviceParams }>(
-    '/devices/:id',
-    {},
+    '/:id',
+    {
+      onRequest: [instance.authenticate],
+    },
     async (request, reply) => {
       try {
         const device = await Device.getById(request.params.id)
@@ -49,8 +51,10 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.post<{ Body: DeviceAttrs }>(
-    '/devices',
-    {},
+    '/',
+    {
+      onRequest: [instance.authenticate],
+    },
     async (request, reply) => {
       try {
         const device = await Device.create(request.body)
@@ -63,8 +67,10 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.put<{ Params: deviceParams; Body: DeviceAttrs }>(
-    '/devices/:id',
-    {},
+    '/:id',
+    {
+      onRequest: [instance.authenticate],
+    },
     async (request, reply) => {
       try {
         const id = request.params.id
@@ -81,8 +87,10 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.delete<{ Params: deviceParams }>(
-    '/devices/:id',
-    {},
+    '/:id',
+    {
+      onRequest: [instance.authenticate],
+    },
     async (request, reply) => {
       try {
         const device = await Device.remove(request.params.id)
@@ -98,8 +106,10 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.patch<{ Params: deviceParams }>(
-    '/devices/:id/activate',
-    {},
+    '/:id/activate',
+    {
+      onRequest: [instance.authenticate],
+    },
     async (request, reply) => {
       try {
         const device = await Device.activate(request.params.id)
@@ -115,8 +125,10 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
   )
 
   instance.patch<{ Params: deviceParams }>(
-    '/devices/:id/deactivate',
-    {},
+    '/:id/deactivate',
+    {
+      onRequest: [instance.authenticate],
+    },
     async (request, reply) => {
       try {
         const device = await Device.deactivate(request.params.id)

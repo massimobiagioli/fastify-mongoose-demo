@@ -38,4 +38,7 @@ const UserPlugin: FastifyPluginAsync = async (
   instance.decorate('User', createUserService(User))
 }
 
-export default fp(UserPlugin)
+export default fp(UserPlugin, {
+  name: 'user-plugin',
+  dependencies: ['db-plugin'],
+})
