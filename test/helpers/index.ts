@@ -2,7 +2,7 @@ import { fastify, FastifyPluginAsync } from 'fastify'
 import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
-import { settings } from '../config'
+import { settings } from '../../src/config'
 
 export type CreateTestAppOptions = {
   autoLoadPlugins?: boolean

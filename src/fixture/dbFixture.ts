@@ -7,6 +7,7 @@ async function createUsers() {
     username: 'guest',
     firstname: 'John',
     lastname: 'Doe',
+    password: 'Secret!',
     email: 'john.doe@email.com',
   }).save()
 }

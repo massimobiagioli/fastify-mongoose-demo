@@ -1,8 +1,8 @@
 import {test, beforeEach} from "tap"
 import createDbFixtures from "../../../src/fixture/dbFixture";
-import {createTestApp} from "../../../src/helpers";
+import {createTestApp} from "../../helpers";
 import stub from 'sbuts'
-import {DeviceRoutesPlugin} from "../../../src/routes/devices";
+import DeviceRoutesPlugin from "../../../src/routes/devices";
 
 beforeEach(async () => {
     await createDbFixtures()
@@ -29,7 +29,7 @@ test('create new devices', async t => {
     t.equal(device.isActive, false, 'returns the devices activation status')
 })
 
-test('error create new devices', async t => {
+test('error create new devices',async t => {
     const app = createTestApp({
         autoLoadPlugins: false,
         autoLoadRoutes: false,
