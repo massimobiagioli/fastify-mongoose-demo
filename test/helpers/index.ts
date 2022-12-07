@@ -1,4 +1,4 @@
-import { fastify, FastifyPluginAsync } from 'fastify'
+import {fastify, FastifyInstance, FastifyPluginAsync} from 'fastify'
 import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
@@ -34,7 +34,7 @@ export const createTestApp = (
 
   if (options?.autoLoadPlugins) {
     app.register(autoload, {
-      dir: path.join(__dirname, '../plugins'),
+      dir: path.join(__dirname, '../../src/plugins'),
     })
   }
 
@@ -46,7 +46,8 @@ export const createTestApp = (
 
   if (options?.autoLoadRoutes) {
     app.register(autoload, {
-      dir: path.join(__dirname, '../routes'),
+      dir: path.join(__dirname, '../../src/routes'),
+      options: { prefix: '/api' },
     })
   } else {
     options?.routes?.forEach((route) => {
@@ -55,4 +56,19 @@ export const createTestApp = (
   }
 
   return app
+}
+
+export const login = async (app: FastifyInstance) => {
+  const response = await app.inject({
+    method: 'POST',
+    url: '/api/auth/login',
+    payload: {
+      username: 'tester',
+      password: 'Secret!'
+    }
+  })
+
+  const loginInfo = response.json()
+
+  return loginInfo.token
 }

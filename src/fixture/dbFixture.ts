@@ -3,8 +3,8 @@ import { User, Device } from '../models'
 import { settings } from '../config'
 
 async function createUsers() {
-  await new User({
-    username: 'guest',
+  await User.addOne({
+    username: 'tester',
     firstname: 'John',
     lastname: 'Doe',
     password: 'Secret!',
@@ -13,12 +13,12 @@ async function createUsers() {
 }
 
 async function createDevices() {
-  await new Device({
+  await Device.addOne({
     name: 'First Device',
     address: '10.10.10.1',
   }).save()
 
-  await new Device({
+  await Device.addOne({
     name: 'Second Device',
     address: '10.10.10.2',
   }).save()
