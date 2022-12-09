@@ -1,59 +1,84 @@
-import {fastify, FastifyInstance, FastifyPluginAsync} from 'fastify'
+import {fastify, FastifyInstance, FastifyPluginAsync, FastifyReply, FastifyRequest} from 'fastify'
 import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
 import { settings } from '../../src/config'
+import {DB} from "../../src/plugins/db";
+import {createUserService} from "../../src/plugins/user";
+import {createDeviceService} from "../../src/plugins/device";
+
+declare module 'fastify' {
+  export interface FastifyInstance {
+    db: DB
+    User: ReturnType<typeof createUserService>
+    Device: ReturnType<typeof createDeviceService>
+    tester: string
+    authenticate: (
+        request: FastifyRequest,
+        reply: FastifyReply,
+    ) => Promise<void>
+  }
+}
+
+declare module '@fastify/jwt' {
+  interface FastifyJWT {
+    payload: {
+      username: string
+    }
+    user: {
+      username: string
+      firstname: string
+      lastname: string
+      email: string
+    }
+  }
+}
 
 export type CreateTestAppOptions = {
   autoLoadPlugins?: boolean
-  autoLoadRoutes?: boolean
   decorates?: Record<string, unknown>
-  routes?: FastifyPluginAsync[]
+  plugins?: FastifyPluginAsync[]
 }
 
 const defaultCreateTestAppOptions: CreateTestAppOptions = {
   autoLoadPlugins: true,
-  autoLoadRoutes: true,
   decorates: {},
-  routes: [],
+  plugins: []
 }
 
 export const createTestApp = (
   createTestAppOptions: CreateTestAppOptions = defaultCreateTestAppOptions,
 ) => {
+  const options = {
+    ...defaultCreateTestAppOptions,
+    ...createTestAppOptions,
+  }
+
   const app = fastify()
 
   app.register(JWT, {
     secret: settings.jwtSecret,
   })
 
-  const options = {
-    ...defaultCreateTestAppOptions,
-    ...createTestAppOptions,
-  }
-
   if (options?.autoLoadPlugins) {
     app.register(autoload, {
       dir: path.join(__dirname, '../../src/plugins'),
     })
-  }
-
-  if (options?.decorates) {
-    Object.entries(options.decorates).forEach(([key, value]) => {
-      app.decorate(key, value)
-    })
-  }
-
-  if (options?.autoLoadRoutes) {
-    app.register(autoload, {
-      dir: path.join(__dirname, '../../src/routes'),
-      options: { prefix: '/api' },
-    })
   } else {
-    options?.routes?.forEach((route) => {
-      app.register(route)
+    options?.plugins?.forEach((plugin) => {
+      app.register(plugin)
     })
+    if (options?.decorates) {
+      Object.entries(options.decorates).forEach(([key, value]) => {
+        app.decorate(key, value)
+      })
+    }
   }
+
+  app.register(autoload, {
+    dir: path.join(__dirname, '../../src/routes'),
+    options: { prefix: '/api' },
+  })
 
   return app
 }
