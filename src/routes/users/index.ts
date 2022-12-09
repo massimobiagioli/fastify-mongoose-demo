@@ -14,6 +14,14 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
     '/me',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Users'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {

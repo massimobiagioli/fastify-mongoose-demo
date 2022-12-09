@@ -3,6 +3,8 @@ import pino from 'pino'
 import autoload from '@fastify/autoload'
 import path from 'path'
 import JWT from '@fastify/jwt'
+import fastifySwagger from '@fastify/swagger'
+import fastifySwaggerUi from '@fastify/swagger-ui'
 import { settings } from './config'
 import { DB } from './plugins/db'
 import { createUserService } from './plugins/user'
@@ -40,6 +42,24 @@ const createApp = () => {
     logger: pino({ level: 'info' }),
   })
 
+  app.register(fastifySwagger, {
+    swagger: {
+      info: {
+        title: 'Fastify Mongoose Demo',
+        description: 'Fastify Mongoose Demo Application',
+        version: '0.1.0',
+      },
+    },
+  })
+
+  app.register(fastifySwaggerUi, {
+    routePrefix: '/api/docs',
+    uiConfig: {
+      docExpansion: 'full',
+      deepLinking: false,
+    },
+  })
+
   app.register(JWT, {
     secret: settings.jwtSecret,
   })
@@ -51,6 +71,11 @@ const createApp = () => {
   app.register(autoload, {
     dir: path.join(__dirname, 'routes'),
     options: { prefix: '/api' },
+  })
+
+  app.ready((err) => {
+    if (err) throw err
+    app.swagger()
   })
 
   return app

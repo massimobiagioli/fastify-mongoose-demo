@@ -19,6 +19,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {
@@ -35,6 +43,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/:id',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {
@@ -54,6 +70,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          201: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {
@@ -70,6 +94,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/:id',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {
@@ -90,6 +122,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/:id',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {
@@ -109,6 +149,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/:id/activate',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {
@@ -128,6 +176,14 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     '/:id/deactivate',
     {
       onRequest: [instance.authenticate],
+      schema: {
+        tags: ['Devices'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
     },
     async (request, reply) => {
       try {

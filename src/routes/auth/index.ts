@@ -25,7 +25,16 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
 
   instance.post<{ Body: RegisterAttrs }>(
     '/register',
-    {},
+    {
+      schema: {
+        tags: ['Auth'],
+        response: {
+          201: {
+            type: 'array',
+          },
+        },
+      },
+    },
     async (request, reply) => {
       try {
         await User.create(request.body)
@@ -37,19 +46,32 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.post<{ Body: LoginAttrs }>('/login', {}, async (request, reply) => {
-    try {
-      const { username, password } = request.body
-      if (!(await User.checkPassword(username, password))) {
-        return reply.code(401).send()
+  instance.post<{ Body: LoginAttrs }>(
+    '/login',
+    {
+      schema: {
+        tags: ['Auth'],
+        response: {
+          200: {
+            type: 'array',
+          },
+        },
+      },
+    },
+    async (request, reply) => {
+      try {
+        const { username, password } = request.body
+        if (!(await User.checkPassword(username, password))) {
+          return reply.code(401).send()
+        }
+        const token = instance.jwt.sign({ username }, { expiresIn: '1h' })
+        reply.send({ token })
+      } catch (error) {
+        request.log.error(error)
+        return reply.code(500).send()
       }
-      const token = instance.jwt.sign({ username }, { expiresIn: '1h' })
-      reply.send({ token })
-    } catch (error) {
-      request.log.error(error)
-      return reply.code(500).send()
-    }
-  })
+    },
+  )
 }
 
 export default AuthRoutesPlugin
