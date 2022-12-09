@@ -1,4 +1,4 @@
-.PHONY: start down logs status mongo-shell app-build app-dev app-start test-unit test-integration test lint lint-and-fix format husky help
+.PHONY: start down logs status mongo-shell app-build app-dev app-start test-unit test-integration test test-coverage test-filter lint lint-and-fix format husky help
 .DEFAULT_GOAL := help
 run-docker-compose = docker compose -f docker-compose.yml
 
@@ -35,6 +35,12 @@ test-integration: # Run integration tests
 
 test: # Run all tests
 	npm run test
+
+test-coverage: # Run all tests with coverage
+	npm run test-coverage
+
+test-filter: # Run all tests with filter
+	npm run test-filter --filter=$(filter)
 
 lint: # Run linter
 	npm run lint

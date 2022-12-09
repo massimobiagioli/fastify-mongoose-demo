@@ -9,6 +9,8 @@
     "test-unit": "ENV=test tap test/unit/**/*.test.ts --ts --no-coverage",
     "test-integration": "ENV=test tap test/integration/**/*.test.ts --ts --no-coverage",
     "test": "ENV=test tap test/**/*.test.ts --ts --no-coverage",
+    "test-filter": "ENV=test tap --grep=$npm_config_filter --ts --no-coverage",
+    "test-coverage": "ENV=test tap test/**/*.test.ts --ts",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "format": "prettier --config .prettierrc 'src/**/*.ts' --write",
