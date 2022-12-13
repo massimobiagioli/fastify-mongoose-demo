@@ -4,12 +4,13 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import { Static, Type } from '@sinclair/typebox'
+import { CreateUserDto } from '../../plugins/user'
 
-const LoginAttrs = Type.Object({
+const LoginDto = Type.Object({
   username: Type.String(),
   password: Type.String(),
 })
-type LoginAttrs = Static<typeof LoginAttrs>
+type LoginDto = Static<typeof LoginDto>
 
 const Token = Type.Object(
   {
@@ -19,27 +20,18 @@ const Token = Type.Object(
 )
 type Token = Static<typeof Token>
 
-const RegisterAttrs = Type.Object({
-  username: Type.String(),
-  password: Type.String(),
-  firstname: Type.String(),
-  lastname: Type.String(),
-  email: Type.String(),
-})
-type RegisterAttrs = Static<typeof RegisterAttrs>
-
 export const AuthRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
   _options: FastifyPluginOptions,
 ) => {
   const { User } = instance
 
-  instance.post<{ Body: RegisterAttrs }>(
+  instance.post<{ Body: CreateUserDto }>(
     '/register',
     {
       schema: {
         tags: ['Auth'],
-        body: RegisterAttrs,
+        body: CreateUserDto,
         response: {
           201: {
             type: 'null',
@@ -63,12 +55,12 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.post<{ Body: LoginAttrs; Reply: Token }>(
+  instance.post<{ Body: LoginDto; Reply: Token }>(
     '/login',
     {
       schema: {
         tags: ['Auth'],
-        body: LoginAttrs,
+        body: LoginDto,
         response: {
           200: Token,
           401: {

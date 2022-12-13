@@ -18,13 +18,14 @@ export const UserDto = Type.Object({
 })
 export type UserDto = Static<typeof UserDto>
 
-export type CreateUser = {
-  username: string
-  password: string
-  firstname: string
-  lastname: string
-  email: string
-}
+export const CreateUserDto = Type.Object({
+  username: Type.String(),
+  password: Type.String(),
+  firstname: Type.String(),
+  lastname: Type.String(),
+  email: Type.String(),
+})
+export type CreateUserDto = Static<typeof CreateUserDto>
 
 export const createUserService = (User: UserModel) => {
   const serialize = (document: UserDocument): UserDto => {
@@ -47,7 +48,7 @@ export const createUserService = (User: UserModel) => {
       }
       return serialize(document)
     },
-    create: async (data: CreateUser) => {
+    create: async (data: CreateUserDto) => {
       const user = User.addOne(data)
       await user.save()
       return user
