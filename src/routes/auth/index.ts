@@ -58,7 +58,7 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
         reply.code(201).send()
       } catch (error) {
         request.log.error(error)
-        return reply.code(500).send()
+        reply.code(500).send()
       }
     },
   )
@@ -92,7 +92,7 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
         return { token }
       } catch (error) {
         request.log.error(error)
-        return reply.code(500).send()
+        reply.code(500).send()
       }
     },
   )

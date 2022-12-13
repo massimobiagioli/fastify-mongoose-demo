@@ -21,11 +21,15 @@ const AuthPlugin: FastifyPluginAsync = async (
           return
         }
         const user = await User.getByUsername(decoded.username)
+        if (!user) {
+          reply.send('User not found')
+          return
+        }
         return {
-          username: user?.username,
-          firstname: user?.firstname,
-          lastname: user?.lastname,
-          email: user?.email,
+          username: user.username,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          email: user.email,
         }
       })
     },

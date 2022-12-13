@@ -3,6 +3,7 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
+import { UserDto } from '../../plugins/user'
 
 const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
@@ -10,15 +11,21 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
 ) => {
   const { User } = instance
 
-  instance.get(
+  instance.get<{ Reply: UserDto }>(
     '/me',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Users'],
         response: {
-          200: {
-            type: 'array',
+          200: UserDto,
+          404: {
+            type: 'null',
+            description: 'User not found',
+          },
+          500: {
+            type: 'null',
+            description: 'Error retrieving user',
           },
         },
       },
@@ -27,9 +34,9 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
       try {
         const user = await User.getByUsername(request.user.username)
         if (!user) {
-          return reply.code(404).send({ message: 'User not found' })
+          return reply.code(404).send()
         }
-        return reply.code(200).send(user)
+        return user
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
