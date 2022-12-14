@@ -1,6 +1,11 @@
 import { Static, Type } from '@sinclair/typebox'
 
-export const Device = Type.Object({
+export const DeviceParams = Type.Object({
+  id: Type.String(),
+})
+export type DeviceParams = Static<typeof DeviceParams>
+
+export const DeviceDto = Type.Object({
   id: Type.String(),
   name: Type.String(),
   address: Type.String(),
@@ -8,7 +13,10 @@ export const Device = Type.Object({
   createdAt: Type.String(),
   updatedAt: Type.String(),
 })
-export type Device = Static<typeof Device>
+export type DeviceDto = Static<typeof DeviceDto>
+
+export const DeviceDtos = Type.Array(DeviceDto)
+export type DeviceDtos = Static<typeof DeviceDtos>
 
 export const CreateDeviceCommand = Type.Object({
   name: Type.String(),

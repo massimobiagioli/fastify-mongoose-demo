@@ -3,12 +3,13 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
-import { DeviceAttrs } from '../../models'
-import { CreateDeviceCommand } from '../../schemas/device'
-
-interface deviceParams {
-  id: string
-}
+import {
+  CreateDeviceCommand,
+  DeviceDto,
+  DeviceDtos,
+  DeviceParams,
+  UpdateDeviceCommand,
+} from '../../schemas/device'
 
 const DeviceRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
@@ -16,23 +17,24 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
 ) => {
   const { Device } = instance
 
-  instance.get(
+  instance.get<{ Reply: DeviceDtos }>(
     '/',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
         response: {
-          200: {
-            type: 'array',
+          200: DeviceDtos,
+          500: {
+            type: 'null',
+            description: 'Error retrieving devices',
           },
         },
       },
     },
     async (request, reply) => {
       try {
-        const devices = await Device.findAll()
-        return reply.code(200).send(devices)
+        return await Device.findAll()
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
@@ -40,15 +42,21 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.get<{ Params: deviceParams }>(
+  instance.get<{ Params: DeviceParams; Reply: DeviceDto }>(
     '/:id',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
         response: {
-          200: {
-            type: 'array',
+          200: DeviceDto,
+          404: {
+            type: 'null',
+            description: 'Device not found',
+          },
+          500: {
+            type: 'null',
+            description: 'Error retrieving device',
           },
         },
       },
@@ -59,7 +67,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         if (!device) {
           return reply.code(404).send()
         }
-        return reply.code(200).send(device)
+        return device
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
@@ -67,23 +75,25 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.post<{ Body: CreateDeviceCommand }>(
+  instance.post<{ Body: CreateDeviceCommand; Reply: DeviceDto }>(
     '/',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        body: CreateDeviceCommand,
         response: {
-          201: {
-            type: 'array',
+          201: DeviceDto,
+          500: {
+            type: 'null',
+            description: 'Error creating device',
           },
         },
       },
     },
     async (request, reply) => {
       try {
-        const device = await Device.create(request.body)
-        return reply.code(201).send(device)
+        return await Device.create(request.body)
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
@@ -91,15 +101,26 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.put<{ Params: deviceParams; Body: DeviceAttrs }>(
+  instance.put<{
+    Params: DeviceParams
+    Body: UpdateDeviceCommand
+    Reply: DeviceDto
+  }>(
     '/:id',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        body: UpdateDeviceCommand,
         response: {
-          200: {
-            type: 'array',
+          200: DeviceDto,
+          404: {
+            type: 'null',
+            description: 'Device not found',
+          },
+          500: {
+            type: 'null',
+            description: 'Error updating device',
           },
         },
       },
@@ -111,7 +132,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         if (!device) {
           return reply.code(404).send()
         }
-        return reply.code(200).send(device)
+        return device
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
@@ -119,15 +140,21 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.delete<{ Params: deviceParams }>(
+  instance.delete<{ Params: DeviceParams; Reply: DeviceDto }>(
     '/:id',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
         response: {
-          200: {
-            type: 'array',
+          200: DeviceDto,
+          404: {
+            type: 'null',
+            description: 'Device not found',
+          },
+          500: {
+            type: 'null',
+            description: 'Error deleting device',
           },
         },
       },
@@ -138,7 +165,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         if (!device) {
           return reply.code(404).send()
         }
-        return reply.code(200).send(device)
+        return device
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
@@ -146,15 +173,21 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.patch<{ Params: deviceParams }>(
+  instance.patch<{ Params: DeviceParams; Reply: DeviceDto }>(
     '/:id/activate',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
         response: {
-          200: {
-            type: 'array',
+          200: DeviceDto,
+          404: {
+            type: 'null',
+            description: 'Device not found',
+          },
+          500: {
+            type: 'null',
+            description: 'Error activating device',
           },
         },
       },
@@ -165,7 +198,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         if (!device) {
           return reply.code(404).send()
         }
-        return reply.code(200).send(device)
+        return device
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()
@@ -173,15 +206,21 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.patch<{ Params: deviceParams }>(
+  instance.patch<{ Params: DeviceParams; Reply: DeviceDto }>(
     '/:id/deactivate',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
         response: {
-          200: {
-            type: 'array',
+          200: DeviceDto,
+          404: {
+            type: 'null',
+            description: 'Device not found',
+          },
+          500: {
+            type: 'null',
+            description: 'Error deactivating device',
           },
         },
       },
@@ -192,7 +231,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
         if (!device) {
           return reply.code(404).send()
         }
-        return reply.code(200).send(device)
+        return device
       } catch (error) {
         request.log.error(error)
         return reply.code(500).send()

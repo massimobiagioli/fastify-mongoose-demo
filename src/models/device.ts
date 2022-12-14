@@ -1,12 +1,8 @@
 import { Schema, Document, model, Model } from 'mongoose'
-
-export interface DeviceAttrs {
-  name: string
-  address: string
-}
+import { CreateDeviceCommand, DeviceDto } from '../schemas/device'
 
 export interface DeviceModel extends Model<DeviceDocument> {
-  addOne(doc: DeviceAttrs): DeviceDocument
+  addOne(doc: CreateDeviceCommand): DeviceDocument
 }
 
 export interface DeviceDocument extends Document {
@@ -15,6 +11,7 @@ export interface DeviceDocument extends Document {
   isActive: boolean
   createdAt: string
   updatedAt: string
+  toDto(): DeviceDto
 }
 export const deviceSchema: Schema = new Schema(
   {
@@ -36,8 +33,19 @@ export const deviceSchema: Schema = new Schema(
   },
 )
 
-deviceSchema.statics.addOne = (doc: DeviceAttrs) => {
+deviceSchema.statics.addOne = (doc: CreateDeviceCommand) => {
   return new Device(doc)
+}
+
+deviceSchema.methods.toDto = function (): DeviceDto {
+  return {
+    id: this._id,
+    name: this.name,
+    address: this.address,
+    isActive: this.isActive,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
+  }
 }
 
 export const Device = model<DeviceDocument, DeviceModel>('Device', deviceSchema)

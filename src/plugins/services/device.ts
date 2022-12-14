@@ -7,34 +7,52 @@ import fp from 'fastify-plugin'
 import { DeviceModel } from '../../models'
 import {
   CreateDeviceCommand,
-  Device,
+  DeviceDto,
+  DeviceDtos,
   UpdateDeviceCommand,
 } from '../../schemas/device'
 
 export const createDeviceService = (Device: DeviceModel) => {
   return {
-    findAll: async () => {
-      return Device.find({})
+    findAll: async (): Promise<DeviceDtos> => {
+      const documents = await Device.find({})
+      return documents.map((doc) => doc.toDto())
     },
-    getById: async (id: string) => {
-      return Device.findById(id)
+    getById: async (id: string): Promise<DeviceDto | undefined> => {
+      const document = await Device.findById(id)
+      return document?.toDto()
     },
-    create: async (data: CreateDeviceCommand) => {
+    create: async (data: CreateDeviceCommand): Promise<DeviceDto> => {
       const device = Device.addOne(data)
       await device.save()
-      return device
+      return device.toDto()
     },
-    update: async (id: string, data: UpdateDeviceCommand) => {
-      return Device.findByIdAndUpdate(id, data, { new: true })
+    update: async (
+      id: string,
+      data: UpdateDeviceCommand,
+    ): Promise<DeviceDto | undefined> => {
+      const document = await Device.findByIdAndUpdate(id, data, { new: true })
+      return document?.toDto()
     },
-    activate: async (id: string) => {
-      return Device.findByIdAndUpdate(id, { isActive: true }, { new: true })
+    activate: async (id: string): Promise<DeviceDto | undefined> => {
+      const document = await Device.findByIdAndUpdate(
+        id,
+        { isActive: true },
+        { new: true },
+      )
+      return document?.toDto()
     },
-    deactivate: async (id: string) => {
-      return Device.findByIdAndUpdate(id, { isActive: false }, { new: true })
+    deactivate: async (id: string): Promise<DeviceDto | undefined> => {
+      const document = await Device.findByIdAndUpdate(
+        id,
+        { isActive: false },
+        { new: true },
+      )
+      return document?.toDto()
     },
-    remove: async (id: string) => {
-      return Device.findByIdAndDelete(id)
+    remove: async (id: string): Promise<DeviceDto | undefined> => {
+      const document = await Device.findByIdAndDelete(id)
+      return document?.toDto()
     },
   }
 }
