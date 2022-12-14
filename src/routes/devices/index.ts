@@ -4,6 +4,7 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import { DeviceAttrs } from '../../models'
+import { CreateDeviceCommand } from '../../schemas/device'
 
 interface deviceParams {
   id: string
@@ -66,7 +67,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.post<{ Body: DeviceAttrs }>(
+  instance.post<{ Body: CreateDeviceCommand }>(
     '/',
     {
       onRequest: [instance.authenticate],
@@ -106,7 +107,7 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
     async (request, reply) => {
       try {
         const id = request.params.id
-        const device = await Device.update({ id, data: request.body })
+        const device = await Device.update(id, request.body)
         if (!device) {
           return reply.code(404).send()
         }

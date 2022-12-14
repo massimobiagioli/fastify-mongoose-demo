@@ -5,21 +5,11 @@ import {
 } from 'fastify'
 import fp from 'fastify-plugin'
 import { DeviceModel } from '../../models'
-
-export type CreateDevice = {
-  name: string
-  address: string
-}
-
-export type UpdateDeviceData = {
-  name: string
-  address: string
-}
-
-export type UpdateDevice = {
-  id: string
-  data: UpdateDeviceData
-}
+import {
+  CreateDeviceCommand,
+  Device,
+  UpdateDeviceCommand,
+} from '../../schemas/device'
 
 export const createDeviceService = (Device: DeviceModel) => {
   return {
@@ -29,12 +19,12 @@ export const createDeviceService = (Device: DeviceModel) => {
     getById: async (id: string) => {
       return Device.findById(id)
     },
-    create: async (data: CreateDevice) => {
+    create: async (data: CreateDeviceCommand) => {
       const device = Device.addOne(data)
       await device.save()
       return device
     },
-    update: async ({ id, data }: UpdateDevice) => {
+    update: async (id: string, data: UpdateDeviceCommand) => {
       return Device.findByIdAndUpdate(id, data, { new: true })
     },
     activate: async (id: string) => {

@@ -3,22 +3,8 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
-import { Static, Type } from '@sinclair/typebox'
-import { CreateUserDto } from '../../plugins/services/user'
-
-const LoginDto = Type.Object({
-  username: Type.String(),
-  password: Type.String(),
-})
-type LoginDto = Static<typeof LoginDto>
-
-const Token = Type.Object(
-  {
-    token: Type.String(),
-  },
-  { description: 'JWT token' },
-)
-type Token = Static<typeof Token>
+import { LoginReply, LoginCommand } from '../../schemas/auth'
+import { CreateUserCommand } from '../../schemas/user'
 
 export const AuthRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
@@ -26,12 +12,12 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
 ) => {
   const { User } = instance
 
-  instance.post<{ Body: CreateUserDto }>(
+  instance.post<{ Body: CreateUserCommand }>(
     '/register',
     {
       schema: {
         tags: ['Auth'],
-        body: CreateUserDto,
+        body: CreateUserCommand,
         response: {
           201: {
             type: 'null',
@@ -55,14 +41,14 @@ export const AuthRoutesPlugin: FastifyPluginAsync = async (
     },
   )
 
-  instance.post<{ Body: LoginDto; Reply: Token }>(
+  instance.post<{ Body: LoginCommand; Reply: LoginReply }>(
     '/login',
     {
       schema: {
         tags: ['Auth'],
-        body: LoginDto,
+        body: LoginCommand,
         response: {
-          200: Token,
+          200: LoginReply,
           401: {
             type: 'null',
             description: 'Invalid username or password',

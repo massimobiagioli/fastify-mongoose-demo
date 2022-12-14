@@ -3,7 +3,7 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
-import { UserDto } from '../../plugins/services/user'
+import { AuthenticatedUser } from '../../schemas/user'
 
 const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,
@@ -11,14 +11,14 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
 ) => {
   const { User } = instance
 
-  instance.get<{ Reply: UserDto }>(
+  instance.get<{ Reply: AuthenticatedUser }>(
     '/me',
     {
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Users'],
         response: {
-          200: UserDto,
+          200: AuthenticatedUser,
           404: {
             type: 'null',
             description: 'User not found',
