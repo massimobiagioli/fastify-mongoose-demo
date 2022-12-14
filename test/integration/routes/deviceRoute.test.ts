@@ -2,8 +2,8 @@ import {beforeEach, test} from "tap"
 import createDbFixtures from "../../../src/fixture/dbFixture";
 import {createTestApp, login} from "../../helpers";
 import DBPlugin from "../../../src/plugins/db";
-import UserPlugin from "../../../src/plugins/user";
-import AuthPlugin from "../../../src/plugins/auth";
+import UserPlugin from "../../../src/plugins/services/user";
+import AuthPlugin from "../../../src/plugins/services/middlewares/auth";
 
 beforeEach(async () => {
     await createDbFixtures()

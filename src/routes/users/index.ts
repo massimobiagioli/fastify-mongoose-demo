@@ -3,7 +3,7 @@ import {
   FastifyPluginOptions,
   FastifyPluginAsync,
 } from 'fastify'
-import { UserDto } from '../../plugins/user'
+import { UserDto } from '../../plugins/services/user'
 
 const UserRoutesPlugin: FastifyPluginAsync = async (
   instance: FastifyInstance,

@@ -4,7 +4,7 @@ import {
   FastifyPluginOptions,
 } from 'fastify'
 import fp from 'fastify-plugin'
-import { UserDocument, UserModel } from '../models'
+import { UserDocument, UserModel } from '../../models'
 import { Static, Type } from '@sinclair/typebox'
 
 export const UserDto = Type.Object({
@@ -67,7 +67,4 @@ const UserPlugin: FastifyPluginAsync = async (
   instance.decorate('User', createUserService(User))
 }
 
-export default fp(UserPlugin, {
-  name: 'user-plugin',
-  dependencies: ['db-plugin'],
-})
+export default fp(UserPlugin)

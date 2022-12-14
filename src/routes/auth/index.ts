@@ -4,7 +4,7 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import { Static, Type } from '@sinclair/typebox'
-import { CreateUserDto } from '../../plugins/user'
+import { CreateUserDto } from '../../plugins/services/user'
 
 const LoginDto = Type.Object({
   username: Type.String(),

@@ -4,7 +4,7 @@ import {
   FastifyPluginAsync,
 } from 'fastify'
 import fp from 'fastify-plugin'
-import { DeviceModel } from '../models'
+import { DeviceModel } from '../../models'
 
 export type CreateDevice = {
   name: string
@@ -57,7 +57,4 @@ const DevicePlugin: FastifyPluginAsync = async (
   instance.decorate('Device', createDeviceService(Device))
 }
 
-export default fp(DevicePlugin, {
-  name: 'device-plugin',
-  dependencies: ['db-plugin'],
-})
+export default fp(DevicePlugin)

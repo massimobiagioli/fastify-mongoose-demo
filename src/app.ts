@@ -7,8 +7,8 @@ import fastifySwagger from '@fastify/swagger'
 import fastifySwaggerUi from '@fastify/swagger-ui'
 import { settings } from './config'
 import { DB } from './plugins/db'
-import { createUserService } from './plugins/user'
-import { createDeviceService } from './plugins/device'
+import { createUserService } from './plugins/services/user'
+import { createDeviceService } from './plugins/services/device'
 
 declare module 'fastify' {
   export interface FastifyInstance {

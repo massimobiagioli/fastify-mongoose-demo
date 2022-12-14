@@ -36,7 +36,4 @@ const AuthPlugin: FastifyPluginAsync = async (
   )
 }
 
-export default fp(AuthPlugin, {
-  name: 'auth-plugin',
-  dependencies: ['user-plugin'],
-})
+export default fp(AuthPlugin)
