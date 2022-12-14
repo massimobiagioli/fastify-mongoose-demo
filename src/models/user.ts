@@ -1,18 +1,10 @@
 import { Schema, Document, model, Model } from 'mongoose'
 import * as crypto from 'crypto'
 import { settings } from '../config'
-import { AuthenticatedUser } from '../schemas/user'
-
-export interface UserAttrs {
-  username: string
-  password: string
-  firstname: string
-  lastname: string
-  email: string
-}
+import { AuthenticatedUser, CreateUserCommand } from '../schemas/user'
 
 export interface UserModel extends Model<UserDocument> {
-  addOne(doc: UserAttrs): UserDocument
+  addOne(doc: CreateUserCommand): UserDocument
   verifyPassword(username: string, password: string): boolean
 
   toAuthenticatedUser(document: UserDocument): AuthenticatedUser
@@ -67,7 +59,7 @@ const createPasswordHash = (username: string, password: string) => {
   return crypto.createHash('sha256').update(input).digest('base64')
 }
 
-userSchema.statics.addOne = (doc: UserAttrs) => {
+userSchema.statics.addOne = (doc: CreateUserCommand) => {
   const password = createPasswordHash(doc.username, doc.password)
   return new User({
     ...doc,
