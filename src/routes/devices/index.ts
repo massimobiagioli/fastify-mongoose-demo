@@ -23,6 +23,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: DeviceDtos,
           500: {
@@ -48,6 +53,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: DeviceDto,
           404: {
@@ -82,6 +92,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       schema: {
         tags: ['Devices'],
         body: CreateDeviceCommand,
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           201: DeviceDto,
           500: {
@@ -112,6 +127,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       schema: {
         tags: ['Devices'],
         body: UpdateDeviceCommand,
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: DeviceDto,
           404: {
@@ -146,6 +166,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: DeviceDto,
           404: {
@@ -179,6 +204,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: DeviceDto,
           404: {
@@ -212,6 +242,11 @@ const DeviceRoutesPlugin: FastifyPluginAsync = async (
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Devices'],
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: DeviceDto,
           404: {

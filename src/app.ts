@@ -49,6 +49,13 @@ const createApp = () => {
         description: 'Fastify Mongoose Demo Application',
         version: '0.1.0',
       },
+      securityDefinitions: {
+        apiKey: {
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header',
+        },
+      },
     },
   })
 

@@ -17,6 +17,11 @@ const UserRoutesPlugin: FastifyPluginAsync = async (
       onRequest: [instance.authenticate],
       schema: {
         tags: ['Users'],
+        security: [
+          {
+            apiKey: [],
+          },
+        ],
         response: {
           200: AuthenticatedUser,
           404: {
